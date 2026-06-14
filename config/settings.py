@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-print("CSRF_TRUSTED_ORIGINS from env:", os.getenv("CSRF_TRUSTED_ORIGINS", ""))
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -134,7 +132,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
 
-# Настройки JWT-токенов
+# Настройки JWT-токенов, пагинации
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -157,20 +155,6 @@ CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
-# Настройки JWT-токенов, пагинации
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
-}
-
-# Настройки срока действия токенов
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-}
 
 # Настройка CORS для фронтенда
 CORS_ALLOWED_ORIGINS = [
