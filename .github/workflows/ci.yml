@@ -45,6 +45,9 @@ jobs:
           DATABASE_PASSWORD: postgres
           DEBUG: "True"
           DJANGO_SECRET_KEY: dummy
+          ALLOWED_HOSTS: localhost,127.0.0.1
+          CORS_ALLOWED_ORIGINS: http://localhost
+          CSRF_TRUSTED_ORIGINS: http://localhost
         run: python manage.py migrate
       - name: Run tests
         env:
@@ -55,6 +58,9 @@ jobs:
           DATABASE_PASSWORD: postgres
           DEBUG: "True"
           DJANGO_SECRET_KEY: dummy
+          ALLOWED_HOSTS: localhost,127.0.0.1
+          CORS_ALLOWED_ORIGINS: http://localhost
+          CSRF_TRUSTED_ORIGINS: http://localhost
         run: python manage.py test
 
   build:
