@@ -44,7 +44,7 @@ jobs:
           DATABASE_USER: postgres
           DATABASE_PASSWORD: postgres
           DEBUG: "True"
-          SECRET_KEY: dummy
+          DJANGO_SECRET_KEY: dummy
         run: python manage.py migrate
       - name: Run tests
         env:
@@ -54,7 +54,7 @@ jobs:
           DATABASE_USER: postgres
           DATABASE_PASSWORD: postgres
           DEBUG: "True"
-          SECRET_KEY: dummy
+          DJANGO_SECRET_KEY: dummy
         run: python manage.py test
 
   build:
