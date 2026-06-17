@@ -106,7 +106,7 @@ jobs:
           ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
           ALLOWED_HOSTS=${{ secrets.SERVER_IP }}
           CORS_ALLOWED_ORIGINS=http://${{ secrets.SERVER_IP }}
-          CSRF_TRUSTED_ORIGINS=http://${{ secrets.SERVER_IP }}
+          CSRF_TRUSTED_ORIGINS=http://${{ secrets.CSRF_TRUSTED_ORIGINS }}
           EOL
           docker-compose down
           docker-compose pull
