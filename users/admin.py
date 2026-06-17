@@ -3,7 +3,10 @@ from .models import User
 
 
 @admin.register(User)
-class CustomUserAdmin(admin.ModelAdmin):  # Наследуемся от базового ModelAdmin
+class CustomUserAdmin(admin.ModelAdmin):
+    """Кастомная настройка панели администратора для модели User.
+    Использует базовый ModelAdmin вместо UserAdmin во избежание  ошибок с отсутствующими
+    полями (first_name, last_name, date_joined)."""
     list_display = ("email", "username", "is_staff", "is_active")
     search_fields = ("email", "username")
     ordering = ("email",)
