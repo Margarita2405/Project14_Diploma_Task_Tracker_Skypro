@@ -8,19 +8,19 @@ GitHub Actions.
 
 ## 📌 Содержание
 
-- [Описание](#описание)
-- [Технологии](#технологии)
-- [Локальный запуск](#локальный-запуск)
+- 🧩 [Описание](#описание)
+- 🛠 [Технологии](#технологии)
+- 🏁 [Локальный запуск](#локальный-запуск)
   - [С использованием Docker](#с-использованием-docker)
   - [Без Docker (ручной запуск)](#без-docker-ручной-запуск)
-- [Переменные окружения](#переменные-окружения)
-- [Тестирование](#тестирование)
-- [Документация API](#документация-api)
-- [CI/CD и деплой](#cicd-и-деплой)
-- [Структура проекта](#структура-проекта)
-- [Возможные проблемы и их решение](#возможные-проблемы-и-их-решение)
-- [Автор](#автор)
-
+- 🔐 [Переменные окружения](#переменные-окружения)
+- 🧪 [Тестирование](#тестирование)
+- 📚 [Документация API](#документация-api)
+- ⚙️ [CI/CD и деплой](#cicd-и-деплой)
+- 📁 [Структура проекта](#структура-проекта)
+- 📊 [Демонстрация работы и примеры запросов](#демонстрация-работы-и-примеры-запросов)
+- ⚠️ [Возможные проблемы и их решение](#возможные-проблемы-и-их-решение)
+- 👩‍💻 [Автор](#автор)
 ---
 
 ## 🧩 Описание
@@ -57,88 +57,78 @@ GitHub Actions.
 
 ### С использованием Docker (рекомендуется)
 
-1. **Клонируйте репозиторий**
-```
-git clone https://github.com/Margarita2405/Project14_Diploma_Task_Tracker_Skypro
-cd Project14_Diploma_Task_Tracker_Skypro
+1. **Клонируйте репозиторий и перейдите в папку проекта:**
+```bash
+git clone https://github.com/Margarita2405/task-tracker-api
+cd task-tracker-api
 ```
 
-2. **Создайте файл .env (скопируйте .env.example и заполните)**
-
-```
+2. **Создайте файл .env (скопируйте .env.example и заполните):**
+```bash
 cp .env.example .env
 ```
-Обязательно укажите SECRET_KEY, настройки базы данных и т.д.
+Обязательно укажите `SECRET_KEY`, настройки базы данных и остальные параметры.
 
-3. **Запустите контейнеры**
-
-```
+3. **Запустите контейнеры:**
+```bash
 docker-compose up --build
 ```
-После запуска сервисы будут доступны:
+После запуска сервисы будут доступны по адресам:
+- **API:** http://localhost
+- **Админка:** http://localhost/admin
+- **Swagger:** http://localhost/swagger/
 
-API: http://localhost
-
-Админка: http://localhost/admin
-
-Swagger: http://localhost/swagger/
-
-4. **Выполните миграции (в новом терминале)**
-
-```
+4. **Выполните миграции (в новом окне терминала):**
+```bash
 docker-compose exec web python manage.py migrate
 ```
 
-5. **Создайте суперпользователя**
-
-```
+5. **Создайте суперпользователя:**
+```bash
 docker-compose exec web python manage.py createsuperuser
 ```
 
-6. **Остановка**
-
-```
+6. **Для остановки контейнеров выполните:**
+```bash
 docker-compose down
 ```
 
 ### Без Docker (ручной запуск)
 
-1. **Создайте виртуальное окружение**
-
-```
+1. **Создайте и активируйте виртуальное окружение:**
+```bash
 python -m venv venv
-source venv/bin/activate   # Linux/Mac
-venv\Scripts\activate      # Windows
+source venv/bin/activate   # Для Linux/Mac
+venv\Scripts\activate      # Для Windows
 ```
 
-2. **Установите зависимости**
-
-```
+2. **Установите зависимости:**
+```bash
 pip install -r requirements.txt
 ```
 
 3. **Настройте базу данных (например, PostgreSQL или SQLite для разработки).
-   Отредактируйте .env или напрямую settings.py.**
+Отредактируйте `.env` или напрямую `settings.py`.**
 
-4. **Выполните миграции и создайте суперпользователя**
-
-```
+4. **Выполните миграции и создайте суперпользователя:**
+```bash
 python manage.py migrate
 python manage.py createsuperuser
 ```
 
-5. **Запустите сервер разработки**
-
-```
+5. **Запустите сервер разработки:**
+```bash
 python manage.py runserver
 ```
+API будет доступен по адресу: http://127.0.0.1:8000.
 
-API будет доступен по http://127.0.0.1:8000.
+---
 
-🔐 Переменные окружения (.env)
+## 🔐 Переменные окружения (.env)
 
-Создайте файл .env в корне проекта по образцу .env.example:
+Создайте файл `.env` в корне проекта по образцу `.env.example`:
 
+```text
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
@@ -164,110 +154,113 @@ DOCKER_HUB_ACCESS_TOKEN=your_token
 SSH_USER=your_user_name
 SERVER_IP=123.123.123.123
 SSH_KEY=your_secret_key_here
+```
+*Примечание: Для продакшена установите `DEBUG=False`, добавьте реальный IP/домен в `ALLOWED_HOSTS` и
+используйте надежные пароли.*
 
-Для продакшена установите DEBUG=False, добавьте реальный IP/домен в ALLOWED_HOSTS и используйте настоящие пароли.
+---
 
-🧪 Тестирование
+## 🧪 Тестирование
 
 Запуск всех тестов:
 
-# Локально с Docker
-```
+**Локально с Docker:**
+```bash
 docker-compose exec web python manage.py test
 ```
 
-# Без Docker
-```
+**Без Docker:**
+```bash
 python manage.py test
 ```
 
-Для проверки покрытия (coverage):
-
-```
+Для проверки покрытия кода тестами (Coverage):
+```bash
 coverage run manage.py test
 coverage report -m
 ```
 
-## Тесты включают:
+### Тесты включают проверку:
+- Процессов регистрации и аутентификации пользователей.
+- Полного цикла CRUD операций с задачами.
+- Прав доступа (кастомные Permissions: пользователь видит/редактирует только свои задачи).
+- Фильтрации, поиска и сортировки.
+- Корректности работы пагинации.
 
-- Регистрацию и аутентификацию
+---
 
-- CRUD операции с задачами
 
-- Права доступа (пользователь видит/редактирует только свои задачи)
+## 📚 Документация API
 
-- Фильтрацию и поиск
+- **Swagger UI:** http://localhost/swagger/
+- **ReDoc:** http://localhost/redoc/
 
-- Пагинацию
-
-📚 Документация API
-
-Swagger UI: http://localhost/swagger/
-ReDoc: http://localhost/redoc/
 
 ## Основные эндпоинты
 
-Метод	    URL	                         Описание
-POST	    /api/users/register/	     Регистрация пользователя
-POST	    /api/token/	                 Получение JWT (access + refresh)
-POST	    /api/token/refresh/	         Обновление access‑токена
-GET	        /api/tasks/	                 Список задач (с фильтрацией)
-POST	    /api/tasks/	                 Создание задачи
-GET	        /api/tasks/{id}/	         Детали задачи
-PUT/PATCH	/api/tasks/{id}/	         Обновление задачи
-DELETE	    /api/tasks/{id}/	         Удаление задачи
+| Метод | URL | Описание |
+| :--- | :--- | :--- |
+| **POST** | `/api/users/register/` | Регистрация нового пользователя |
+| **POST** | `/api/token/` | Получение пары JWT (access + refresh) |
+| **POST** | `/api/token/refresh/` | Обновление просроченного `access`-токена |
+| **GET** | `/api/tasks/` | Получение списка задач (с фильтрацией и поиском) |
+| **POST** | `/api/tasks/` | Создание новой задачи |
+| **GET** | `/api/tasks/{id}/` | Получение детальной информации о задаче |
+| **PUT/PATCH** | `/api/tasks/{id}/` | Обновление полей задачи |
+| **DELETE** | `/api/tasks/{id}/` | Удаление задачи из системы |
+
 
 ## Фильтрация и поиск
 
-- ?status=new / ?status=in_progress / ?status=completed
+Вы можете комбинировать параметры фильтрации в строке запроса:
+- `?status=new` / `?status=in_progress` / `?status=completed` — фильтрация по статусу выполнения.
+- `?priority=high` / `?priority=medium` / `?priority=low` — фильтрация по приоритету задачи.
+- `?assigned_to=1` — фильтрация по ID ответственного сотрудника.
+- `?search=текст` — полнотекстовый поиск по полям `title` и `description`.
+- `?ordering=-created_at` — сортировка результатов (например, от новых к старым).
 
-- ?priority=high / ?priority=medium / ?priority=low
 
-- ?assigned_to=1
+## Пример запроса на создание задачи (cURL)
 
-- ?search=текст (поиск по title и description)
-
-- ?ordering=-created_at (сортировка)
-
-## Пример запроса (создание задачи)
-
-```
+```bash
 curl -X POST http://localhost/api/tasks/ \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{"title":"Новая задача","priority":"high"}'
 ```
 
-⚙️ CI/CD и деплой
+## ⚙️ CI/CD и деплой
 
-Проект настроен на автоматический деплой через GitHub Actions при пуше в ветку develop.
+Проект настроен на автоматический деплой через GitHub Actions при пуше в ветку `develop`.
 
-## Процесс
+### Процесс пайплайна
+1. **Линтинг:** автоматическая проверка качества кода утилитой `flake8`.
+2. **Тестирование:** запуск тест-сьюта в изолированном окружении с подключением реальной БД PostgreSQL.
+3. **Сборка:** автоматическая сборка Docker-образа бэкенда (тег генерируется на основе хэша коммита).
+4. **Публикация:** загрузка готового собранного образа в Docker Hub репозиторий.
+5. **Деплой:** удаленное подключение к серверу по протоколу SSH и выполнение скрипта:
+   - Клонирование/обновление кодовой базы репозитория.
+   - Динамическое создание файла `.env` на основе GitHub Secrets.
+   - Перезапуск контейнеров через `docker-compose up -d`.
+   - Автоматическое выполнение миграций базы данных.
 
-1. Линтинг (flake8)
-2. Тестирование (с PostgreSQL в контейнере)
-3. Сборка Docker-образа (тег – хэш коммита)
-4. Публикация образа в Docker Hub
-5. Деплой на удалённый сервер по SSH:
-- Клонирование/обновление репозитория
-- Создание .env из GitHub Secrets
-- Запуск docker-compose up -d
-- Выполнение миграций
+### Необходимые Secrets (настройки репозитория на GitHub)
 
-## Необходимые Secrets (настройки репозитория)
+| Secret | Описание |
+| :--- | :--- |
+| `DOCKER_HUB_USERNAME` | Логин от вашего аккаунта на Docker Hub |
+| `DOCKER_HUB_ACCESS_TOKEN` | Токен доступа (Personal Access Token) к Docker Hub |
+| `SSH_KEY` | Приватный SSH-ключ для авторизации на вашем сервере |
+| `SSH_USER` | Имя системного пользователя на сервере (например, `ubuntu`) |
+| `SERVER_IP` | Публичный IP-адрес вашего удаленного сервера |
+| `DJANGO_SECRET_KEY` | Секретный ключ (`SECRET_KEY`) для настроек Django |
+| `ADMIN_PASSWORD` | Начальный пароль администратора для автосоздания (при необходимости) |
+| `DB_PASSWORD` | Надежный пароль для суперпользователя базы данных PostgreSQL |
 
-Secret	                    Описание
-DOCKER_HUB_USERNAME	        Логин на Docker Hub
-DOCKER_HUB_ACCESS_TOKEN	    Токен доступа к Docker Hub
-SSH_KEY	                    Приватный SSH-ключ для доступа к серверу
-SSH_USER	                Имя пользователя на сервере (например, test)
-SERVER_IP	                Публичный IP адрес сервера
-DJANGO_SECRET_KEY	        Секретный ключ Django
-ADMIN_PASSWORD	            Пароль для суперпользователя (если нужно автоматическое создание)
 
-## Ручной деплой (если не используется CI)
+### Ручной деплой (альтернативный вариант без CI)
 
-```
+```bash
 ssh test@<server_ip>
 cd ~/tasktracker
 git pull origin develop
@@ -276,18 +269,22 @@ docker-compose up -d
 docker-compose exec web python manage.py migrate
 ```
 
-📁 Структура проекта
+---
 
-Project14_Diploma_Task_Tracker_Skypro/
+## 📁 Структура проекта
+
+```text
+task-tracker-api/
 ├── .github/workflows/
-│   └── ci.yml                # GitHub Actions pipeline
-├── config/                   # Настройки Django
+│   └── ci.yml                # Пайплайн конфигурация GitHub Actions
+├── config/                   # Ядро проекта (Настройки Django)
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
-├── static/                   # Статические файлы (собираются)
-├── media/                    # Медиафайлы (пусто)
-├── tasks/                    # Приложение задач
+├── static/                   # Статические файлы проекта
+├── media/                    # Пользовательские медиафайлы
+├── screenshots/              # Демонстрация работы API (Postman/Swagger)
+├── tasks/                    # Бизнес-логика приложения задач
 │   ├── admin.py
 │   ├── apps.py
 │   ├── models.py
@@ -296,7 +293,7 @@ Project14_Diploma_Task_Tracker_Skypro/
 │   ├── tests.py
 │   ├── urls.py
 │   └── views.py
-├── users/                    # Кастомная модель пользователя и регистрация
+├── users/                    # Модуль авторизации и кастомных пользователей
 │   ├── admin.py
 │   ├── apps.py
 │   ├── models.py
@@ -305,8 +302,8 @@ Project14_Diploma_Task_Tracker_Skypro/
 │   ├── urls.py
 │   └── views.py
 ├── .dockerignore                   
-├── .env                      # Переменные окружения
-├── .env.example              # Пример переменных окружения
+├── .env                      
+├── .env.example              
 ├── .flake8
 ├── .gitignore
 ├── docker-compose.yml
@@ -317,40 +314,77 @@ Project14_Diploma_Task_Tracker_Skypro/
 ├── requirements.txt
 ├── manage.py
 └── README.md
+```
 
-⚠️ Возможные проблемы и их решение
+---
 
-## Ошибка relation "django_celery_beat_crontabschedule" does not exist
+## 📊 Демонстрация работы и примеры запросов (Документация и Postman)
 
-Проект не использует Celery, поэтому эта ошибка не должна возникать. Если появилась – проверьте, не остались ли
-старые миграции от другого проекта. Убедитесь, что django_celery_beat не добавлен в INSTALLED_APPS.
+### 1. Интерактивная документация API (Swagger / OpenAPI)
+Автоматически генерируемая интерактивная схема всех эндпоинтов системы для удобной интеграции с фронтендом.
 
-## 502 Bad Gateway при обращении к сайту
+![Swagger Документация](screenshots/1_swagger.png)
+![Swagger Спецификация](screenshots/2_swagger.png)
 
-- Проверьте, что контейнер web запущен: docker-compose ps
+### 2. Панель администратора Django (/admin/)
+Настроенный административный интерфейс для управления пользователями, группами и контроля создания задач.
 
-- Проверьте логи Nginx: docker-compose logs nginx
+![Админка Django 1](screenshots/3_django_admin.png)
+![Админка Django 2](screenshots/4_django_admin.png)
+![Админка Django 3](screenshots/5_django_admin.png)
 
-- Убедитесь, что в nginx.conf указан правильный proxy_pass http://web:8000;
+### 3. Регистрация нового пользователя (POST `/api/users/`)
+Эндпоинт для создания учетной записи. Пароли хэшируются на уровне базы данных методами Django.
 
-## Не удаётся подключиться к базе данных
+![Регистрация пользователя](screenshots/6_user_registration.png)
 
-- Убедитесь, что в .env указан DATABASE_HOST=db (имя сервиса в docker-compose)
+### 4. Аутентификация и получение JWT-токенов (POST `/api/token/`)
+Реализация безопасного доступа: клиент отправляет учетные данные и получает пару токенов (`access` и `refresh`) для авторизации последующих запросов.
 
-- Проверьте, что контейнер db здоров: docker-compose logs db
+![Получение JWT-токена](screenshots/7_jwt_token.png)
 
-## Ошибка Permission denied при git pull на сервере
+### 5. Безопасность и изоляция данных: Просмотр списка задач (GET `/api/tasks/`)
+Продемонстрирована работа кастомных прав доступа: каждый авторизованный пользователь видит в ответе строго
+свои собственные задачи.
 
-- Убедитесь, что SSH-ключ добавлен в GitHub (Settings → SSH and GPG keys)
+![Просмотр списка задач первого пользователя](screenshots/8_tasks_list_user1.png)
+![Просмотр списка задач второго пользователя](screenshots/9_tasks_list_user2.png)
 
-- На сервере проверьте права на папку ~/tasktracker: chown -R test:test ~/tasktracker
+### 6. Проверка прав доступа: Попытка изменения чужого объекта (PUT `/api/tasks/{id}/`)
+При попытке пользователя обновить или модифицировать задачу, созданную другим человеком, система возвращает
+ошибку `404 Not Found`. Это гарантирует, что структура данных защищена от несанкционированного изменения
+сторонними пользователями.
 
-👩‍💻 Автор
+![Ошибка прав доступа](screenshots/10_permission_error.png)
 
-Маргарита Буршева
+---
 
-Email: mbursheva@mail.ru
+## ⚠️ Возможные проблемы и их решение
 
-Проект: https://github.com/Margarita2405/Project13_Course_work5_Skypro
+### Ошибка relation "django_celery_beat_crontabschedule" does not exist
+Проект не использует Celery, поэтому эта ошибка не должна возникать. Если она появилась — проверьте, 
+не остались ли старые миграции от другого проекта. Убедитесь, что `django_celery_beat` не добавлен
+в раздел `INSTALLED_APPS` в настройках `settings.py`.
 
-Дипломный проект в рамках курса Skypro «Django REST Framework»
+### 502 Bad Gateway при обращении к сайту
+- Проверьте, что контейнер с бэкендом запущен: `docker-compose ps`
+- Просмотрите логи прокси-сервера Nginx: `docker-compose logs nginx`
+- Убедитесь, что в файле `nginx.conf` указан правильный адрес апстрима: `proxy_pass http://web:8000;`
+
+### Не удаётся подключиться к базе данных
+- Убедитесь, что в файле `.env` указан параметр `DATABASE_HOST=db` (имя сервиса базы данных в `docker-compose.yml`).
+- Проверьте статус и логи контейнера базы данных: `docker-compose logs db`
+
+### Ошибка Permission denied при git pull на сервере
+- Убедитесь, что ваш публичный SSH-ключ добавлен в ваш профиль GitHub (**Settings** ➔ **SSH and GPG keys**).
+- На удаленном сервере проверьте права на чтение/запись для рабочей папки: `chown -R test:test ~/tasktracker`
+
+---
+
+## 👩‍💻 Автор
+
+**Маргарита Буршева**
+- **Email:** mbursheva@mail.ru
+- **GitHub Проект:** [task-tracker-api](https://github.com/Margarita2405/task-tracker-api)
+
+*Дипломный проект выполнен в рамках профессионального курса Университета Skypro «Django REST Framework».*
